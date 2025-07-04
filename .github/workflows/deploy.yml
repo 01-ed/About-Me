@@ -25,12 +25,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
+          cache: 'npm'
       
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm config set legacy-peer-deps true
+          npm install --legacy-peer-deps --no-audit --no-fund
       
       - name: Build with Next.js
-        run: npm run build
+        run: |
+          npm run build
+        env:
+          NODE_ENV: production
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
